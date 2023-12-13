@@ -9,6 +9,7 @@ class softwareFilter{
         T* data;
         int SIZE;
         int count;
+        int elementCount;
     public:
         softwareFilter(int SIZE);
         ~softwareFilter();
@@ -20,6 +21,7 @@ template<class T>
 softwareFilter<T>::softwareFilter(int SIZE) : SIZE(SIZE) {
     data = new T[SIZE];
     count = 0;
+    elementCount = 0;
 }
 
 template<class T>
@@ -32,6 +34,7 @@ void softwareFilter<T>::dataAdd(T value) {
     data[count] = value;
     count++;
     if(count >= SIZE) count = 0;
+    if(elementCount <= SIZE) elementCount++;
 }
 
 template<class T>
@@ -40,7 +43,7 @@ T softwareFilter<T>::filter() {
     for(int i = 0; i < SIZE; i++) {
         sum += data[i];
     }
-    return sum / SIZE;
+    return sum / elementCount;
 }
 
 
