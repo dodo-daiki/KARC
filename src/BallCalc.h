@@ -39,6 +39,7 @@ class BallCalc{
         int selectIR(float Value[]);
         XY CalcXY();
         RT CalcRT(XY XY);
+        RT CalcDribblerRT(XY XY);
         float wraparoundConst(float length);
         float wraparoundCalc(RT RT);
     public:
@@ -46,7 +47,7 @@ class BallCalc{
         BallCalc(int* Pin, float* Angle, int size = 16, int selectNum = 4, int loopNum = 10);
         ~BallCalc();
         void getIR(float Value[]);
-        float calc();
+        float calc(bool dribbler);
         
         //内部定数＿変更用関数
         void setRefAngle(float Angle);
@@ -96,9 +97,13 @@ void BallCalc::getIR(float Value[]){
 }
 
 //全体の計算
-float BallCalc::calc(){
+float BallCalc::calc(bool dribbler = false){
     XY Ball_XY = CalcXY();
-    RT Ball_RT = CalcRT(Ball_XY);
+    if(dribbler){
+        RT Ball_RT = CalcDribblerRT(Ball_XY);
+    } else {
+        RT Ball_RT = CalcRT(Ball_XY);
+    }
     return wraparoundCalc(Ball_RT);
 }
 
@@ -150,6 +155,27 @@ RT BallCalc::CalcRT(XY XY){
     RT result;
     result.radius = Complex<float>::absolute(Ball_Complex);
     result.theta = Complex<float>::arg(Ball_Complex / REF_Complex) * 180 / PI;
+    return result;
+}
+
+//フィールド座標系における機体からボールの距離と角度を計算（ドリブラーを考慮）
+RT BallCalc::CalcDribblerRT(XY XY){
+    Complex<float> Ball_Complex(XY.x, XY.y);
+    Complex<float> REF_Complex(REF_XY.x, REF_XY.y);
+    Complex<float> Diff_Complex(0.0,0.0);
+
+    RT result;
+    result.radius = Complex<float>::absolute(Ball_Complex);
+
+    Diff_Complex = Ball_Complex / REF_Complex;
+    if(Diff_Complex.real >= 0){
+        result.theta = Complex<float>::arg(Diff_Complex) * 180 / PI;
+    } else {
+        Diff_Complex.real *= -1; 
+        result.theta = Complex<float>::arg(Diff_Complex) * 180 / PI + 180;
+        if(result.theta > 180) result.theta -= 360;
+    }
+    
     return result;
 }
 
