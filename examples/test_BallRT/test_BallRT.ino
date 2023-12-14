@@ -1,8 +1,10 @@
 #include <KARC.h>
 #define IR_NUM 16
 
-//機体定数
 int IRPins[IR_NUM] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+
+
+//機体定数
 float IRAngle[IR_NUM] = {0,22.5,45,67.5,90,112.5,135,157.5,180,202.5,225,247.5,270,292.5,315,337.5};
 
 //回り込み定数の設定
@@ -10,7 +12,7 @@ float REFERENCE = 1000;
 float INCLINATION = 250;
 
 //BallCalcクラスの実体化
-BallCalc Ball(IRPins, IRAngle);
+BallCalc Ball(IRAngle);
 
 
 //ジャイロセンサの値を取得する関数（ユーザー側で記述）

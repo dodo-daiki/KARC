@@ -19,7 +19,6 @@ typedef struct{
 class BallCalc{
     protected:
         //内部変数
-        int* IRPins;
         float* IRAngle;
         float* IRCos;
         float* IRSin;
@@ -44,7 +43,7 @@ class BallCalc{
         float wraparoundCalc(RT RT);
     public:
         //実行に必要な関数
-        BallCalc(int* Pin, float* Angle, int size = 16, int selectNum = 4, int loopNum = 10);
+        BallCalc(float* Angle, int size = 16, int selectNum = 4, int loopNum = 10);
         ~BallCalc();
         void getIR(float Value[]);
         float calc(bool dribbler);
@@ -61,8 +60,8 @@ class BallCalc{
 };
 
 //コンストラクタ　各種変数の初期化
-BallCalc::BallCalc( int* Pin, float* Angle, int size, int selectNum, int loopNum)
-: IRPins(Pin), IRAngle(Angle), SIZE(size), SELECT_NUM(selectNum), LOOP_NUM(loopNum) {
+BallCalc::BallCalc(float* Angle, int size, int selectNum, int loopNum)
+: IRAngle(Angle), SIZE(size), SELECT_NUM(selectNum), LOOP_NUM(loopNum) {
     //メモリの確保
     IRCos = new float[SIZE];
     IRSin = new float[SIZE];
