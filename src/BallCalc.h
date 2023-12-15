@@ -80,11 +80,10 @@ BallCalc::BallCalc(float* Angle, int size, int selectNum, int loopNum)
 BallCalc::~BallCalc() {
     delete[] IRCos;
     delete[] IRSin;
-    //クラスのデータ解放がdelete関数で出来なかったので、free関数を使用
     for(int i=0;i<SIZE;i++){
-        free(IRData[i]); 
+        delete IRData[i];
     }
-    free(IRData);
+    delete IRData;
 }
 
 //各IRセンサの値を取得する
